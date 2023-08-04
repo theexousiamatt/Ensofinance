@@ -1,0 +1,4 @@
+fastapi== 0.101.0
+web3==6.8.0
+ape-tokens==0.10.3
+pydantic==2.1.1

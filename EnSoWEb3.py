@@ -17,7 +17,7 @@ class AaveLibrary:
     def __init__(self, network, aave_contract_address):
         self.network = network
         self.web3 = Web3(Web3.HTTPProvider(network))
-        self.aave_contract = self.web3.eth.contract(address=aave_contract_address, abi=YOUR_AAVE_ABI)
+        self.aave_contract = self.web3.eth.contract(address=aave_contract_address, abi=AAVE_ABI)
 
     def _load_account(self, keystore_file, keystore_password):
         return wallets.load(keystore_file, keystore_password)
@@ -34,7 +34,7 @@ class AaveLibrary:
             token_address = self._resolve_token_address(token_symbol)
             token_amount = self._calculate_token_amount(amount, token_symbol)
 
-            # Perform lending operation using self.aave_contract and token_address
+            # lending operation using self.aave_contract and token_address
             # ...
 
             return "Lending successful"
@@ -47,7 +47,7 @@ class AaveLibrary:
             token_address = self._resolve_token_address(token_symbol)
             token_amount = self._calculate_token_amount(amount, token_symbol)
 
-            # Perform borrowing operation using self.aave_contract and token_address
+            # borrowing operation using self.aave_contract and token_address
             # ...
 
             return "Borrowing successful"
@@ -68,7 +68,7 @@ class OperationBundle:
             results.append(result)
         return results
 
-aave_library = AaveLibrary(network="https://avalanche-mainnet.infura.io/v3/d7828613230a47e795c8ffa6d8df523d", aave_contract_address="your-aave-contract-address")
+aave_library = AaveLibrary(network="https://avalanche-mainnet.infura.io/v3/d7828613230a47e795c8ffa6d8df523d", aave_contract_address="aave-contract-address")
 
 class MethodRequest(BaseModel):
     user: str
@@ -99,7 +99,7 @@ def exec_all(methods: List[str]):
             bundle.add_operation(lambda: aave_library.lend("user", 100, "DAI"))
         elif method == "borrow":
             bundle.add_operation(lambda: aave_library.borrow("user", 100, "DAI"))
-        # Add other methods
+        # other methods
 
     results = bundle.exec_all()
     return {"results": results}

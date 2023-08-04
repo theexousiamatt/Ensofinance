@@ -1,5 +1,4 @@
 from web3 import Web3
-from ape import Client, wallets
 from ape_tokens import resolve, Amount
 from typing import List
 from fastapi import FastAPI, HTTPException
@@ -19,9 +18,6 @@ class AaveLibrary:
         self.web3 = Web3(Web3.HTTPProvider(network))
         self.aave_contract = self.web3.eth.contract(address=aave_contract_address, abi=AAVE_ABI)
 
-    def _load_account(self, keystore_file, keystore_password):
-        return wallets.load(keystore_file, keystore_password)
-
     def _resolve_token_address(self, token_symbol):
         return resolve(token_symbol, network=self.network)
 
@@ -30,7 +26,6 @@ class AaveLibrary:
 
     def lend(self, user, amount, token_symbol):
         try:
-            account = self._load_account("path-to-your-keystore-file", "your-keystore-password")
             token_address = self._resolve_token_address(token_symbol)
             token_amount = self._calculate_token_amount(amount, token_symbol)
 
@@ -43,7 +38,6 @@ class AaveLibrary:
 
     def borrow(self, user, amount, token_symbol):
         try:
-            account = self._load_account("path-to-your-keystore-file", "your-keystore-password")
             token_address = self._resolve_token_address(token_symbol)
             token_amount = self._calculate_token_amount(amount, token_symbol)
 
@@ -68,7 +62,7 @@ class OperationBundle:
             results.append(result)
         return results
 
-aave_library = AaveLibrary(network="https://avalanche-mainnet.infura.io/v3/d7828613230a47e795c8ffa6d8df523d", aave_contract_address="aave-contract-address")
+aave_library = AaveLibrary(network="network-url", aave_contract_address="-aave-contract-address")
 
 class MethodRequest(BaseModel):
     user: str
